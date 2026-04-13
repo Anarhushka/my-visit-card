@@ -44,19 +44,14 @@ jobs:
       - name: Wait for app
         run: sleep 5
 
-      - name: Install k6
-        run: |
-          sudo apt update
-          sudo apt install -y k6
-
       - name: Run smoke test
-        run: k6 run smoke-test.js
+        run: docker run --rm --network host grafana/k6 run /github/workspace/smoke-test.js
 
       - name: Run load test
-        run: k6 run load-test.js
+        run: docker run --rm --network host grafana/k6 run /github/workspace/load-test.js
 
       - name: Run stress test
-        run: k6 run stress-test.js
+        run: docker run --rm --network host grafana/k6 run /github/workspace/stress-test.js
 
   push:
     runs-on: ubuntu-latest
